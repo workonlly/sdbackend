@@ -1,65 +1,90 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import Image from "next/image"; // Kept this import ready for your logo
 
 export default function Home() {
+  // State management for the form
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: ''
+  });
+
+  const handleChange = (e:any) => {
+    const { name, value } = e.target;
+    setCredentials(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e:any) => {
+    e.preventDefault();
+    // Dispatch to your Next.js API route or Auth provider (e.g., NextAuth)
+    console.log('Authenticating payload:', credentials);
+    window.location.href = "/admin";
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="flex items-center justify-center min-h-screen bg-gray-100">
+      {/* Main Panel Container */}
+      <div className="w-full max-w-md p-8 bg-white border border-gray-200 shadow-xl rounded-2xl">
+        
+        {/* Header */}
+        <div className="mb-8 text-center">
+          {/* Optional: Use your Image import here for a logo */}
+          {/* <Image src="/logo.png" alt="Logo" width={48} height={48} className="mx-auto mb-4" /> */}
+          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
+            System Access
+          </h2>
+          <p className="mt-2 text-sm text-gray-500">
+            Authenticate to continue to your dashboard
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {/* Auth Form */}
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-5">
+            <div>
+              <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+                Email Address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                className="w-full px-4 py-3 mt-1.5 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-slate-800 transition-all duration-200"
+                placeholder="admin@local.host"
+                value={credentials.email}
+                onChange={handleChange}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                className="w-full px-4 py-3 mt-1.5 text-gray-900 bg-white border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-800 focus:border-slate-800 transition-all duration-200"
+                placeholder="••••••••"
+                value={credentials.password}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          
+
+          <button
+            type="submit"
+            className="w-full px-4 py-3 text-sm font-bold text-white bg-slate-900 rounded-lg shadow-md hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 transition-all duration-200"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+            Authenticate
+          </button>
+        </form>
+      </div>
+    </main>
   );
 }
