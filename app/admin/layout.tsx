@@ -10,7 +10,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { name: 'Access', path: '/admin' },
         { name: 'Handling', path: '/admin/handling' },
         { name: 'Gedcom_update', path: '/admin/gedcom' },
-        { name: 'Deleting Links', path: '/admin/links' },
         {name:'Contact query',path:'/admin/contact'}
     ];
 
