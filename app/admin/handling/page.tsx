@@ -5,6 +5,7 @@ const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 export default function HandlingPage() {
     const [users, setUsers] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetchUsers();
@@ -17,6 +18,8 @@ export default function HandlingPage() {
             setUsers(responseData.data || []);
         } catch (err) {
             console.error("Failed to fetch logged in users:", err);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -64,7 +67,9 @@ export default function HandlingPage() {
                 </div>
                 
                 <div className="overflow-x-auto">
-                    {users.length === 0 ? (
+                    {isLoading ? (
+                        <div className="p-8 text-center text-gray-500">Loading data...</div>
+                    ) : users.length === 0 ? (
                         <div className="p-8 text-center text-gray-500">No active users found.</div>
                     ) : (
                         <table className="min-w-full divide-y divide-gray-200">

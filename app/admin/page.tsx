@@ -3,6 +3,7 @@ import { useEffect,useState } from "react";
 const APIURL=process.env.NEXT_PUBLIC_API_URL||"http://localhost:4000";
 export default function page() {
     const [data,setData]=useState([])
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const put=async()=>{
             try {
@@ -11,6 +12,8 @@ export default function page() {
                 setData(responseData.data || [])
             } catch (err) {
                 console.error("Failed to fetch data:", err)
+            } finally {
+                setIsLoading(false);
             }
         }
 
@@ -59,8 +62,10 @@ export default function page() {
                     <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard - Users</h1>
                 </div>
                 <div className="p-0">
-                    {data.length === 0 ? (
-                        <div className="p-8 text-center text-gray-500">No data found or loading...</div>
+                    {isLoading ? (
+                        <div className="p-8 text-center text-gray-500">Loading data...</div>
+                    ) : data.length === 0 ? (
+                        <div className="p-8 text-center text-gray-500">No data found.</div>
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">

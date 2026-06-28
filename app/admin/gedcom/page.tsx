@@ -6,6 +6,7 @@ const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 export default function Gedcom() {
     const [gedcomData, setGedcomData] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [loading, setLoading] = useState(false);
     const [mediaLoading, setMediaLoading] = useState(false);
     const [message, setMessage] = useState<{text: string, type: 'success' | 'error'} | null>(null);
@@ -22,6 +23,8 @@ export default function Gedcom() {
             setGedcomData(responseData.data || []);
         } catch (err) {
             console.error("Failed to fetch gedcom data:", err);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -120,7 +123,9 @@ export default function Gedcom() {
                 </div>
                 
                 <div className="overflow-x-auto">
-                    {gedcomData.length === 0 ? (
+                    {isLoading ? (
+                        <div className="p-8 text-center text-gray-500">Loading data...</div>
+                    ) : gedcomData.length === 0 ? (
                         <div className="p-8 text-center text-gray-500">No data found. Sync GEDCOM first.</div>
                     ) : (
                         <table className="min-w-full divide-y divide-gray-200">

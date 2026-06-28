@@ -6,6 +6,7 @@ const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 export default function ContactQueriesPage() {
     const [queries, setQueries] = useState<any[]>([]);
     const [openQuery, setOpenQuery] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         fetchQueries();
@@ -18,6 +19,8 @@ export default function ContactQueriesPage() {
             setQueries(responseData.data || []);
         } catch (err) {
             console.error("Failed to fetch contact queries:", err);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -47,7 +50,9 @@ export default function ContactQueriesPage() {
                 </div>
                 
                 <div className="overflow-x-auto">
-                    {queries.length === 0 ? (
+                    {isLoading ? (
+                        <div className="p-8 text-center text-gray-500">Loading data...</div>
+                    ) : queries.length === 0 ? (
                         <div className="p-8 text-center text-gray-500">No contact queries found.</div>
                     ) : (
                         <table className="min-w-full divide-y divide-gray-200">
