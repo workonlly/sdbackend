@@ -1,10 +1,42 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const router = useRouter();
+    const [isChecking, setIsChecking] = useState(true);
+
+    useEffect(() => {
+        const checkAuth = () => {
+            const authDataStr = localStorage.getItem('admin_auth');
+            if (!authDataStr) {
+                router.push('/');
+                return;
+            }
+
+            try {
+                const authData = JSON.parse(authDataStr);
+                if (authData.authenticated !== "yes" || new Date().getTime() > authData.expiry) {
+                    localStorage.removeItem('admin_auth');
+                    router.push('/');
+                } else {
+                    setIsChecking(false);
+                }
+            } catch (e) {
+                localStorage.removeItem('admin_auth');
+                router.push('/');
+            }
+        };
+
+        checkAuth();
+    }, [router, pathname]);
+
+    if (isChecking) {
+        return <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-500">Checking authentication...</div>;
+    }
 
     const navItems = [
         { name: 'Access', path: '/admin' },

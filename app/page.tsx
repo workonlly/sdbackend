@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image"; // Kept this import ready for your logo
-
+const emaile=process.env.NEXT_PUBLIC_EMAIL;
+const password=process.env.NEXT_PUBLIC_PASSWORD;
 export default function Home() {
   // State management for the form
   const [credentials, setCredentials] = useState({
-    email: '',
-    password: ''
+    email: emaile || '',
+    password: password || ''
   });
+  const [error, setError] = useState('');
 
   const handleChange = (e:any) => {
     const { name, value } = e.target;
@@ -17,9 +18,13 @@ export default function Home() {
 
   const handleSubmit = (e:any) => {
     e.preventDefault();
-    // Dispatch to your Next.js API route or Auth provider (e.g., NextAuth)
-    console.log('Authenticating payload:', credentials);
-    window.location.href = "/admin";
+    if (credentials.email === emaile && credentials.password === password) {
+      const expiry = new Date().getTime() + 15 * 60 * 1000; // 15 minutes
+      localStorage.setItem('admin_auth', JSON.stringify({ authenticated: "yes", expiry }));
+      window.location.href = "/admin";
+    } else {
+      setError("Invalid email or password");
+    }
   };
 
   return (
@@ -75,7 +80,11 @@ export default function Home() {
             </div>
           </div>
 
-          
+          {error && (
+            <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
+              {error}
+            </div>
+          )}
 
           <button
             type="submit"
