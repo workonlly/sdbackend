@@ -14,7 +14,7 @@ export default function ContactQueriesPage() {
 
     const fetchQueries = async () => {
         try {
-            const res = await fetch(APIURL + "/handle/getcontact");
+            const res = await fetch(`${APIURL}/handle/getcontact`);
             const responseData = await res.json();
             setQueries(responseData.data || []);
         } catch (err) {
@@ -26,7 +26,7 @@ export default function ContactQueriesPage() {
 
     const markAsChecked = async (id: any) => {
         try {
-            const res = await fetch(APIURL + "/handle/contactput", {
+            const res = await fetch(`${APIURL}/handle/contactput`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id })

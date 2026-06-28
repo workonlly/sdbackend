@@ -12,8 +12,8 @@ export default function HandlingPage() {
     }, []);
 
     const fetchUsers = async () => {
-        try {
-            const res = await fetch(APIURL + "/handle/logged");
+        try {                        
+            const res = await fetch(`${APIURL}/handle/logged`);
             const responseData = await res.json();
             setUsers(responseData.data || []);
         } catch (err) {
@@ -25,7 +25,7 @@ export default function HandlingPage() {
 
     const updateRole = async (id: string, newRole: string) => {
         try {
-            const res = await fetch(APIURL + "/handle/access", {
+            const res = await fetch(`${APIURL}/handle/access`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, role: newRole })
