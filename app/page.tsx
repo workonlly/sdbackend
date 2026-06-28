@@ -11,7 +11,7 @@ export default function Home() {
   const [error, setError] = useState('');
 
   const handleChange = (e:any) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; 
     setCredentials(prev => ({ ...prev, [name]: value }));
   };
 
@@ -21,6 +21,7 @@ export default function Home() {
       const expiry = new Date().getTime() + 15 * 60 * 1000; 
       localStorage.setItem('admin_auth', JSON.stringify({ authenticated: "yes", expiry }));
       window.location.href = "/admin";
+      console.log("things working")
     } else {
       setError("Invalid email or password");
     }
@@ -34,12 +35,17 @@ export default function Home() {
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
             System Access
           </h2>
-          <p className="mt-2 text-sm text-gray-500">
+           
+           
+            <p className="mt-2 text-sm text-gray-500">
             Authenticate to continue to your dashboard
-          </p>
+            </p>
         </div>
 
         <form className="space-y-6" onSubmit={handleSubmit}>
+          
+          
+          
           <div className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
@@ -57,10 +63,13 @@ export default function Home() {
               />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
-                Password
-              </label>
+
+
+
+                 <div>
+                  <label htmlFor="password" className="block text-sm font-semibold text-gray-700">
+                    Password
+                 </label>
               <input
                 id="password"
                 name="password"
@@ -72,18 +81,19 @@ export default function Home() {
                 onChange={handleChange}
               />
             </div>
-          </div>
+        
+             </div>
 
           {error && (
             <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg">
-              {error}
+               {error}
             </div>
           )}
 
           <button
             type="submit"
             className="w-full px-4 py-3 text-sm font-bold text-white bg-slate-900 rounded-lg shadow-md hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-900 transition-all duration-200"
-          >
+           >
             Authenticate
           </button>
         </form>

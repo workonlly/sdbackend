@@ -6,10 +6,14 @@ const APIURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 
 export default function Gedcom() {
     const [gedcomData, setGedcomData] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [loading, setLoading] = useState(false);
-    const [mediaLoading, setMediaLoading] = useState(false);
-    const [message, setMessage] = useState<{text: string, type: 'success' | 'error'} | null>(null);
+   const [isLoading, setIsLoading] = useState(true);
+   
+   const [loading, setLoading] = useState(false);
+   
+   const [mediaLoading, setMediaLoading] = useState(false);
+    
+   const [message, setMessage] = useState<{text: string, type: 'success' | 'error'} | null>(null);
+
     const [activeTab, setActiveTab] = useState<'individuals' | 'historical'>('individuals');
 
     useEffect(() => {
@@ -23,7 +27,9 @@ export default function Gedcom() {
             setGedcomData(responseData.data || []);
         } catch (err) {
             console.error("Failed to fetch gedcom data:", err);
+            console.log("the roosr can be" +err )
         } finally {
+
             setIsLoading(false);
         }
     };
@@ -38,10 +44,13 @@ export default function Gedcom() {
             });
             if (!res.ok) {
                 setMessage({ text: "Failed to sync GEDCOM data.", type: "error" });
+                console.log("the errofr ca n"+res)
             } else {
                 setMessage({ text: "Successfully synced GEDCOM data!", type: "success" });
+                console.log("done shifting data")
             }
-        } catch (err) {
+        } catch (err) {  
+
             setMessage({ text: "Error connecting to server.", type: "error" });
         }
         await fetchGedcomData();
@@ -59,11 +68,13 @@ export default function Gedcom() {
             });
             if (!res.ok) {
                 setMessage({ text: "Failed to sync Media from Google Drive.", type: "error" });
+                console.log("roor is "+res)
             } else {
                 setMessage({ text: "Successfully synced Media!", type: "success" });
             }
         } catch (err) {
             setMessage({ text: "Error connecting to server.", type: "error" });
+            console.log("eror is "+err)
         }
         await fetchGedcomData();
         setMediaLoading(false);
@@ -82,21 +93,27 @@ export default function Gedcom() {
                 <div className="px-8 py-6 border-b border-gray-200 bg-white flex justify-between items-center">
                     <div>
                         <h1 className="text-2xl font-bold text-gray-900">Gedcom & Media Sync</h1>
-                        <p className="text-gray-500 mt-1 text-sm">Manage GEDCOM data and Google Drive assets</p>
+                             <p className="text-gray-500 mt-1 text-sm">Manage GEDCOM data and Google Drive assets</p>
+                   
+                   
                     </div>
+                   
+                   
                     <div className="flex items-center gap-4">
                         {message && (
                             <span className={`text-sm font-medium ${message.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
                                 {message.text}
                             </span>
                         )}
-                        <button 
+                            <button 
                             onClick={handleUpdate}
-                            disabled={loading || mediaLoading}
+                             disabled={loading || mediaLoading}
                             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-                        >
+                            >
                             {loading ? "Syncing GEDCOM..." : "Update GEDCOM"}
+                     
                         </button>
+                     
                         <button 
                             onClick={handleSyncMedia}
                             disabled={loading || mediaLoading}
@@ -107,16 +124,16 @@ export default function Gedcom() {
                     </div>
                 </div>
 
-                <div className="flex border-b border-gray-200 bg-gray-50 px-8">
-                    <button 
+                      <div className="flex border-b border-gray-200 bg-gray-50 px-8">
+                     <button 
                         className={`py-3 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'individuals' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
                         onClick={() => setActiveTab('individuals')}
                     >
-                        Individuals & Photos
+                          Individuals & Photos
                     </button>
-                    <button 
+                     <button 
                         className={`py-3 px-4 text-sm font-medium border-b-2 transition-colors ${activeTab === 'historical' ? 'border-blue-600 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
-                        onClick={() => setActiveTab('historical')}
+                         onClick={() => setActiveTab('historical')}
                     >
                         Historical Documents
                     </button>
@@ -124,9 +141,9 @@ export default function Gedcom() {
                 
                 <div className="overflow-x-auto">
                     {isLoading ? (
-                        <div className="p-8 text-center text-gray-500">Loading data...</div>
+                        <div className="p-8 text-center text-black">Loading data...</div>
                     ) : gedcomData.length === 0 ? (
-                        <div className="p-8 text-center text-gray-500">No data found. Sync GEDCOM first.</div>
+                        <div className="p-8 text-center text-gray-800">No data found. Sync GEDCOM first.</div>
                     ) : (
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
@@ -134,26 +151,27 @@ export default function Gedcom() {
                                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">ID</th>
                                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Name</th>
                                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">
-                                        {activeTab === 'individuals' ? 'Profile Photo' : 'Historical Documents'}
+                                          {activeTab === 'individuals' ? 'Profile Photo' : 'Historical Documents'}
                                     </th>
                                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Raw Metadata</th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                              <tbody className="bg-white divide-y divide-gray-200">
                                 {gedcomData.map((row) => (
                                     <tr key={row.id} className="hover:bg-gray-50 transition-colors">
+                                      
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{row.id}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{row.given_names} {row.surname}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {activeTab === 'individuals' ? (
+                                             {activeTab === 'individuals' ? (
                                                 row.googleurl ? (
                                                     renderDriveImage(row.googleurl.includes('id=') ? new URL(row.googleurl).searchParams.get('id') || row.googleurl.split('d/')[1]?.split('/')[0] : row.googleurl.split('d/')[1]?.split('/')[0], `Profile ${row.id}`)
-                                                ) : (
+                                                 ) : (
                                                     <span className="text-gray-400 italic">No Photo</span>
-                                                )
+                                                 )
                                             ) : (
                                                 <div className="flex flex-wrap gap-2">
-                                                    {Array.isArray(row.relativelinks) && row.relativelinks.length > 0 ? (
+                                                     {Array.isArray(row.relativelinks) && row.relativelinks.length > 0 ? (
                                                         row.relativelinks.map((url: string, i: number) => {
                                                             const id = url.includes('id=') ? new URL(url).searchParams.get('id') : url.split('d/')[1]?.split('/')[0];
                                                             return id ? <div key={i}>{renderDriveImage(id, `Doc ${i+1}`)}</div> : null;
@@ -165,28 +183,32 @@ export default function Gedcom() {
                                             )}
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-500">
-                                            <details className="cursor-pointer mb-2">
-                                                <summary className="hover:text-gray-700">Raw Metadata</summary>
-                                                <pre className="mt-2 text-xs bg-gray-100 p-2 rounded max-w-xs overflow-auto">
+                                                 <details className="cursor-pointer mb-2">
+                                                   <summary className="hover:text-gray-700">Raw Metadata</summary>
+                                                   <pre className="mt-2 text-xs bg-gray-100 p-2 rounded max-w-xs overflow-auto">
                                                     {JSON.stringify(row.raw_metadata, null, 2)}
                                                 </pre>
                                             </details>
                                             <details className="cursor-pointer mb-2">
                                                 <summary className="hover:text-gray-700">Google URL</summary>
-                                                <pre className="mt-2 text-xs bg-gray-100 p-2 rounded max-w-xs overflow-auto">
-                                                    {row.googleurl || 'null'}
-                                                </pre>
+                                                  <pre className="mt-2 text-xs bg-gray-100 p-2 rounded max-w-xs overflow-auto">
+                                                        {row.googleurl || 'null'}
+                                                    </pre>
                                             </details>
                                             <details className="cursor-pointer">
-                                                <summary className="hover:text-gray-700">Relative Links</summary>
-                                                <pre className="mt-2 text-xs bg-gray-100 p-2 rounded max-w-xs overflow-auto">
+                                                  <summary className="hover:text-gray-700">Relative Links</summary>
+                                                  <pre className="mt-2 text-xs bg-gray-100 p-2 rounded max-w-xs overflow-auto">
                                                     {JSON.stringify(row.relativelinks, null, 2)}
-                                                </pre>
+                                                  </pre>
                                             </details>
-                                        </td>
+                                       
+                                       
+                                         </td>
                                     </tr>
                                 ))}
                             </tbody>
+                      
+                      
                         </table>
                     )}
                 </div>

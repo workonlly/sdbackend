@@ -14,9 +14,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             const authDataStr = localStorage.getItem('admin_auth');
             if (!authDataStr) {
                 router.push('/');
+                alert("Reverify yourself")
                 return;
             }
-
             try {
                 const authData = JSON.parse(authDataStr);
                 if (authData.authenticated !== "yes" || new Date().getTime() > authData.expiry) {
@@ -24,6 +24,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     router.push('/');
                 } else {
                     setIsChecking(false);
+                    console.log("eroor in removing token")
                 }
             } catch (e) {
                 localStorage.removeItem('admin_auth');
@@ -62,33 +63,39 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                                             key={item.name}
                                             href={item.path}
                                             className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200 ${
-                                                isActive
+                                                   isActive
                                                     ? 'border-indigo-600 text-gray-900'
                                                     : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'
-                                            }`}
+                                              }`}
                                         >
-                                            {item.name}
+                                               {item.name}
                                         </Link>
-                                    );
+                                       );
                                 })}
-                            </div>
+                        
+                        
+                               </div>
                         </div>
                     </div>
                 </div>
                 
                 <div className="sm:hidden flex overflow-x-auto border-t border-gray-100">
-                    {navItems.map((item) => {
-                        const isActive = pathname === item.path;
+                      {navItems.map((item) => {
+                   
+                   const isActive = pathname === item.path;
                         return (
                             <Link
-                                key={item.name}
+                                  key={item.name}
                                 href={item.path}
                                 className={`px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 ${
+                   
+                   
                                     isActive
                                         ? 'border-indigo-600 text-indigo-600'
                                         : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
                                 }`}
-                            >
+                   
+                   >
                                 {item.name}
                             </Link>
                         );
