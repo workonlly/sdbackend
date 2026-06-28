@@ -47,16 +47,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
-            {/* Top Navbar */}
             <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
-                            {/* Logo / Title */}
                             <div className="flex-shrink-0 flex items-center">
                                 <span className="text-xl font-bold text-gray-900 tracking-tight">Admin Control</span>
                             </div>
-                            {/* Navigation Links */}
                             <div className="hidden sm:ml-8 sm:flex sm:space-x-8">
                                 {navItems.map((item) => {
                                     const isActive = pathname === item.path;
@@ -79,7 +76,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </div>
                 </div>
                 
-                {/* Mobile Navigation (Visible only on small screens) */}
                 <div className="sm:hidden flex overflow-x-auto border-t border-gray-100">
                     {navItems.map((item) => {
                         const isActive = pathname === item.path;
@@ -100,7 +96,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </div>
             </nav>
 
-            {/* Main Content Area */}
             <main className="flex-1 w-full relative">
                 {children}
             </main>

@@ -4,7 +4,6 @@ import { useState } from "react";
 const emaile=process.env.NEXT_PUBLIC_EMAIL;
 const password=process.env.NEXT_PUBLIC_PASSWORD;
 export default function Home() {
-  // State management for the form
   const [credentials, setCredentials] = useState({
     email: emaile || '',
     password: password || ''
@@ -19,7 +18,7 @@ export default function Home() {
   const handleSubmit = (e:any) => {
     e.preventDefault();
     if (credentials.email === emaile && credentials.password === password) {
-      const expiry = new Date().getTime() + 15 * 60 * 1000; // 15 minutes
+      const expiry = new Date().getTime() + 15 * 60 * 1000; 
       localStorage.setItem('admin_auth', JSON.stringify({ authenticated: "yes", expiry }));
       window.location.href = "/admin";
     } else {
@@ -29,13 +28,9 @@ export default function Home() {
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-gray-100">
-      {/* Main Panel Container */}
       <div className="w-full max-w-md p-8 bg-white border border-gray-200 shadow-xl rounded-2xl">
         
-        {/* Header */}
         <div className="mb-8 text-center">
-          {/* Optional: Use your Image import here for a logo */}
-          {/* <Image src="/logo.png" alt="Logo" width={48} height={48} className="mx-auto mb-4" /> */}
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
             System Access
           </h2>
@@ -44,7 +39,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Auth Form */}
         <form className="space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-5">
             <div>
