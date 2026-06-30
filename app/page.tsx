@@ -5,8 +5,8 @@ const emaile=process.env.NEXT_PUBLIC_EMAIL;
 const password=process.env.NEXT_PUBLIC_PASSWORD;
 export default function Home() {
   const [credentials, setCredentials] = useState({
-    email: emaile || '',
-    password: password || ''
+    email: '',
+    password: ''
   });
   const [error, setError] = useState('');
 
